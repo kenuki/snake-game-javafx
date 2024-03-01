@@ -65,17 +65,29 @@
             </Button>
          </children>
       </VBox>
-      <VBox alignment="CENTER" style="-fx-background-radius: 50; -fx-background-color: #202124;">
+      <VBox alignment="CENTER">
          <children>
-            <Label fx:id="scoreText" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="191.0" style="-fx-font-weight: 900;" text="Score: 0" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font size="32.0" />
-               </font>
-               <effect>
-                  <Glow level="0.51" />
-               </effect>
-            </Label>
-            <Pane fx:id="battleField" minHeight="500.0" minWidth="500.0" style="-fx-background-color: #16171b; -fx-background-radius: 0;" />
+            <HBox alignment="CENTER_LEFT" prefHeight="19.0" prefWidth="500.0">
+               <children>
+                  <Label fx:id="scoreText" contentDisplay="CENTER" prefHeight="47.0" prefWidth="242.0" style="-fx-font-weight: 900;" text="Score: 0" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                     <effect>
+                        <Glow level="0.51" />
+                     </effect>
+                  </Label>
+                  <Label fx:id="recordText" contentDisplay="CENTER" prefHeight="47.0" prefWidth="254.0" style="-fx-font-weight: 900;" text="Best score: 0" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                     <effect>
+                        <Glow level="0.51" />
+                     </effect>
+                  </Label>
+               </children>
+            </HBox>
+            <Pane fx:id="battleField" minHeight="500.0" minWidth="500.0" style="-fx-background-color: #16171b; -fx-border-color: #FFFFFF; -fx-border-radius: 5; -fx-border-insets: -5;" />
          </children>
          <HBox.margin>
             <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />

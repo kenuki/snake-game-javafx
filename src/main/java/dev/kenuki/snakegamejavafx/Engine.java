@@ -8,11 +8,12 @@ import java.util.Random;
 
 public class Engine {
     private final Random random = new Random(System.currentTimeMillis());
-    private final int START_LENGTH = 4;
-    private final int APPLES_AT_TIME = 2;
+    private final int START_LENGTH = 4;//TODO: make this value able to configure
+    private final int APPLES_AT_TIME = 2;//TODO: make this value able to configure
     private final Entity[][] field;
     private final ArrayList<Vec2I> snakePieces;
-    public Direction direction = Direction.RIGHT;
+    private Direction direction = Direction.RIGHT;
+    private Direction futureDirection = direction;
     private boolean alive = true;
     private int score = 0;
     private Vec2I headPos = new Vec2I(START_LENGTH - 1, 0);
@@ -23,7 +24,7 @@ public class Engine {
         generateField(width, height);
     }
 
-    public boolean isDead() {
+    public boolean isNotAlive() {
         return !alive;
     }
 
@@ -48,8 +49,28 @@ public class Engine {
         AppleGenerator.add(random, APPLES_AT_TIME, field);
     }
 
-    private Vec2I makeMove(Vec2I old, Direction dir) {
-        switch (dir) {
+    boolean isNotOpposite(Direction a, Direction b) {
+        if (a == Direction.UP && b == Direction.DOWN) {
+            return false;
+        }
+        if (a == Direction.DOWN && b == Direction.UP) {
+            return false;
+        }
+        if (a == Direction.LEFT && b == Direction.RIGHT) {
+            return false;
+        }
+        if (a == Direction.RIGHT && b == Direction.LEFT) {
+            return false;
+        }
+        return true;
+    }
+
+    private Vec2I makeMove(Vec2I old){
+        if (isNotOpposite(futureDirection, direction)) {
+            direction = futureDirection;
+        }
+
+        switch (direction) {
             case UP -> {
                 return old.y - 1 == -1 ? new Vec2I(old.x, field.length - 1) : new Vec2I(old.x, old.y - 1);
             }
@@ -67,8 +88,8 @@ public class Engine {
     }
 
     public void makeIteration() {
-        Vec2I futureHead = makeMove(headPos, direction);
-        System.out.println(futureHead);
+        Vec2I futureHead = makeMove(headPos);
+
         Vec2I oldPos = new Vec2I(snakePieces.get(snakePieces.size() - 1));
         switch (field[futureHead.y][futureHead.x]) {
             case BODY, WALL -> alive = false;
@@ -84,7 +105,7 @@ public class Engine {
         for (int i = snakePieces.size() - 1; i > 0; i--) {
             snakePieces.set(i, snakePieces.get(i - 1));
         }
-        snakePieces.set(0, makeMove(headPos, direction));
+        snakePieces.set(0, makeMove(headPos));
         headPos = snakePieces.get(0);
         field[headPos.y][headPos.x] = Entity.BODY;
         field[oldPos.y][oldPos.x] = Entity.AIR;
@@ -92,5 +113,9 @@ public class Engine {
 
     public Entity[][] getField() {
         return field;
+    }
+
+    public void makeTurn(Direction direction){
+        futureDirection = direction;
     }
 }

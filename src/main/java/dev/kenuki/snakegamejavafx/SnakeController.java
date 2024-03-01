@@ -1,7 +1,5 @@
 package dev.kenuki.snakegamejavafx;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,12 +29,15 @@ public class SnakeController {
     @FXML
     private Label scoreText;
     @FXML
+    private Label recordText;
+    @FXML
     private ChoiceBox<String> choiceSize;
     private int fieldSize = 10;
     private double entitySize = 50;
     private int gameFps = 170;
     private Engine engine;
     private Timeline timeline;
+    private int record = 0;
     private void drawFrame(){
         battleField.getChildren().clear();
         Entity[][] field = engine.getField();
@@ -64,7 +65,7 @@ public class SnakeController {
         }
     }
 
-    public void initialize() throws Exception {
+    public void initialize() {
         ObservableList<String> choices = FXCollections.observableArrayList(
                 "10x10",
                 "20x20",
@@ -72,12 +73,7 @@ public class SnakeController {
         );
         choiceSize.setItems(choices);
         choiceSize.setValue("10x10");
-        difSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                difSliderChanged();
-            }
-        });
+        difSlider.valueProperty().addListener((observable, oldValue, newValue) -> difSliderChanged());
 
     }
     @FXML
@@ -125,22 +121,14 @@ public class SnakeController {
         if(engine == null){
             return;
         }
-        if(engine.isDead()){
+        if (engine.isNotAlive()) {
             return;
         }
         switch (event.getCode()) {
-            case W -> {
-                engine.direction = Direction.UP;
-            }
-            case S -> {
-                engine.direction = Direction.DOWN;
-            }
-            case D -> {
-                engine.direction = Direction.RIGHT;
-            }
-            case A -> {
-                engine.direction = Direction.LEFT;
-            }
+            case W -> engine.makeTurn(Direction.UP);
+            case S -> engine.makeTurn(Direction.DOWN);
+            case D -> engine.makeTurn(Direction.RIGHT);
+            case A -> engine.makeTurn(Direction.LEFT);
         }
     }
     public void startGame(){
@@ -148,15 +136,19 @@ public class SnakeController {
         timeline = new Timeline(new KeyFrame(duration, event -> {
             engine.makeIteration();
             scoreText.setText("Score: " + engine.getScore());
-            if (engine.isDead()){
+
+            if (engine.getScore() > record) {
+                record = engine.getScore();
+                recordText.setText("Best score: " + record);
+            }
+            if (engine.isNotAlive()) {
                 stopGame();
                 try {
                     engine = new Engine(fieldSize,fieldSize);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-                
-                engine.direction = Direction.RIGHT;
+
                 button.setText("Restart");
                 difSlider.setDisable(false);
                 choiceSize.setDisable(false);
