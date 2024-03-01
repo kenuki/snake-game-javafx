@@ -121,7 +121,7 @@ public class SnakeController {
         if(engine == null){
             return;
         }
-        if(engine.isNotAlive()){
+        if (engine.isNotAlive()) {
             return;
         }
         switch (event.getCode()) {
@@ -136,11 +136,12 @@ public class SnakeController {
         timeline = new Timeline(new KeyFrame(duration, event -> {
             engine.makeIteration();
             scoreText.setText("Score: " + engine.getScore());
-            if(engine.getScore() > record){
+
+            if (engine.getScore() > record) {
                 record = engine.getScore();
                 recordText.setText("Best score: " + record);
             }
-            if (engine.isNotAlive()){
+            if (engine.isNotAlive()) {
                 stopGame();
                 try {
                     engine = new Engine(fieldSize,fieldSize);
