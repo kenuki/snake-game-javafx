@@ -29,12 +29,15 @@ public class SnakeController {
     @FXML
     private Label scoreText;
     @FXML
+    private Label recordText;
+    @FXML
     private ChoiceBox<String> choiceSize;
     private int fieldSize = 10;
     private double entitySize = 50;
     private int gameFps = 170;
     private Engine engine;
     private Timeline timeline;
+    private int record = 0;
     private void drawFrame(){
         battleField.getChildren().clear();
         Entity[][] field = engine.getField();
@@ -133,6 +136,10 @@ public class SnakeController {
         timeline = new Timeline(new KeyFrame(duration, event -> {
             engine.makeIteration();
             scoreText.setText("Score: " + engine.getScore());
+            if(engine.getScore() > record){
+                record = engine.getScore();
+                recordText.setText("Best score: " + record);
+            }
             if (engine.isNotAlive()){
                 stopGame();
                 try {
