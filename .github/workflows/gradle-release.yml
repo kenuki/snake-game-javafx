@@ -12,9 +12,7 @@ jobs:
         include:
           - os: ubuntu-latest
             build_commands: |
-              sudo apt-get update
-              sudo apt-get install -y rpm
-              gradle jpackage
+              gradle -i jpackage
             files: |
               build/jpackage/*.deb
               build/jpackage/*.rpm
