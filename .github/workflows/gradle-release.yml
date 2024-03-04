@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             build_commands: ./gradlew -i jpackage
             files: |
               build/jpackage/*.deb
@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'liberica'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3

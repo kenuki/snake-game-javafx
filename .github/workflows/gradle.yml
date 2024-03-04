@@ -19,7 +19,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'liberica'
       - name: Build with Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
