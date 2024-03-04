@@ -19,7 +19,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v4
@@ -28,6 +28,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'liberica'
+          java-package: 'jdk+fx'
       - name: Build with Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
