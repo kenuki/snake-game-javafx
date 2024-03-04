@@ -52,8 +52,18 @@ dependencies {
     )
 }
 
+// This is all for Kotlin support in JPMS (modularized Java).
+val compileJava: JavaCompile by tasks
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.destinationDirectory = compileJava.destinationDirectory
+tasks.jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+// End
+
 jlink {
-    imageZip = project.file("${layout.buildDirectory}/distributions/app-${javafx.platform.classifier}.zip")
+    imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
+    addExtraDependencies("javafx")
     options.addAll(
         listOf(
             "--strip-debug",
@@ -114,15 +124,6 @@ jlink {
     }
 }
 
-// This is all for Kotlin support in JPMS (modularized Java).
-val compileJava: JavaCompile by tasks
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.destinationDirectory = compileJava.destinationDirectory
-tasks.jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-// End
-
 tasks {
     withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8"
@@ -140,5 +141,6 @@ tasks {
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
+        vendor.set(JvmVendorSpec.BELLSOFT)
     }
 }
