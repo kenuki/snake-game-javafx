@@ -15,9 +15,9 @@ jobs:
             files: |
               build/jpackage/*.deb
               build/jpackage/*.rpm
-          - os: windows-latest
-            build_commands: .\gradlew.bat jpackage
-            files: build/jpackage/*.msi
+#          - os: windows-latest
+#            build_commands: .\gradlew.bat jpackage
+#            files: build/jpackage/*.msi
 
     runs-on: ${{ matrix.os }}
     steps:
