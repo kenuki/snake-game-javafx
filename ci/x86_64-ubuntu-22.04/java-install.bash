@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -x
 set -e
@@ -9,9 +9,10 @@ echo "deb https://apt.bell-sw.com/ stable main" | sudo tee /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get install -y bellsoft-java17-full
 
-export JAVA_HOME="/usr/lib/jvm/bellsoft-java17-full-amd64/"
+# Exported read-only array
+declare -x -r -a GRADLE_PROVISION_ARGS=(
+    -Porg.gradle.java.installations.auto-download=false
+    -Porg.gradle.java.installations.paths=/usr/lib/jvm/bellsoft-java17-full-amd64/
+)
 
-echo 'Starting Gradle task "jlinkZip"'
-./gradlew jlinkZip -Porg.gradle.java.installations.auto-download=false -Porg.gradle.java.installations.fromEnv=JAVA_HOME
-
-echo "End of task."
+echo "End of Install."

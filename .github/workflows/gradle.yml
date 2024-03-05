@@ -1,0 +1,33 @@
+name: Install Java and Gradle, run tasks
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+permissions:
+  contents: write
+
+jobs:
+  gradle:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Java
+        run: bash ci/x86_64-ubuntu-22.04/java-install.bash
+
+      - name: Gradle build
+        run: bash ci/x86_64-ubuntu-22.04/gradle-build.bash
+
+      - name: Gradle jlinkZip
+        run: bash ci/x86_64-ubuntu-22.04/gradle-jlinkZip.bash
+
+      - name: Upload files
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            build/distributions/*.zip
+          if-no-files-found: error
