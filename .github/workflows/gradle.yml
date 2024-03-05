@@ -20,10 +20,14 @@ jobs:
         run: bash ci/x86_64-ubuntu-22.04/java-install.bash
 
       - name: Gradle build
-        run: bash ci/x86_64-ubuntu-22.04/gradle-build.bash
+        run: |
+          bash ci/x86_64-ubuntu-22.04/java-install.bash
+          bash ci/x86_64-ubuntu-22.04/gradle-build.bash
 
       - name: Gradle jlinkZip
-        run: bash ci/x86_64-ubuntu-22.04/gradle-jlinkZip.bash
+        run: |
+          bash ci/x86_64-ubuntu-22.04/java-install.bash
+          bash ci/x86_64-ubuntu-22.04/gradle-jlinkZip.bash
 
       - name: Upload files
         uses: actions/upload-artifact@v4
