@@ -9,22 +9,22 @@ object AppleGenerator {
 	fun add(javaRandom: Random, amount: Int, field: Array<Array<Entity?>>) {
 		val random = javaRandom.asKotlinRandom()
 
-		val list_of_empty = ArrayList<Pair<Int, Int>>()
+		val listOfEmpty = ArrayList<Pair<Int, Int>>()
 
 		for ((y, row) in field.withIndex()) {
 			for ((x, cell) in row.withIndex()) {
 				if (cell == Entity.AIR) {
-					list_of_empty.add(y to x);
+					listOfEmpty.add(y to x)
 				}
 			}
 		}
 
-		assert(list_of_empty.size >= amount) { "ЫААААААА" }
+		assert(listOfEmpty.size >= amount) { "ЫААААААА" }
 
 		for (i in 0..<amount) {
-			val index = random.nextInt(0..<list_of_empty.size);
+			val index = random.nextInt(0..<listOfEmpty.size)
 
-			val (y, x) = list_of_empty.removeAt(index)
+			val (y, x) = listOfEmpty.removeAt(index)
 
 			field[y][x] = Entity.APPLE
 		}
